@@ -35,4 +35,7 @@ Then, the JavaScript code looks for all ```<fscript>``` tags and listens to ```s
 ### 2. Add JS code
 See src/index.html in the ```<head>``` section.
 
+### 3. Convert the third-party scripts you want to delay
+As explained in the introduction.
+
 Work done :-) 
