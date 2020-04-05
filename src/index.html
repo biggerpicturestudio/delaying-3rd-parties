@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <title>Example of delaying 3rd party scripts</title>
+        <link rel="stylesheet" href="style.css">
+
+        <!-- inject this code in the <head> section -->
+        <script>
+            var scriptsExecuted = false;
+            var head = document.getElementsByTagName('head')[0] || document.documentElement;
+            
+            function executeScripts() {
+                var fscripts = document.querySelectorAll('fscript');
+                [].forEach.call(fscripts, function(fscript) {
+                    var script = document.createElement('script');
+                    script.type = 'text/javascript';
+            
+                    if (fscript.hasAttributes()) {
+                        for (var attributeKey in fscript.attributes) {
+                            if (fscript.attributes.hasOwnProperty(attributeKey)) {
+                                script[ fscript.attributes[ attributeKey ].name ] = fscript.attributes[ attributeKey ].value || true;
+                            }
+                        }
+                    } else {
+                        script.appendChild( document.createTextNode( fscript.innerHTML ) );
+                    }
+            
+                    head.insertBefore( script, head.firstChild );
+                });
+            }
+            
+            function initScripts() {
+                if (scriptsExecuted) {
+                    return;
+                }
+            
+                scriptsExecuted = true;
+            
+                setTimeout(function() {
+                    if ('requestIdleCallback' in window) {
+                        requestIdleCallback(executeScripts, { timeout: 1000 });
+                    } else {
+                        executeScripts();
+                    }
+                }, 1000);
+            }
+            
+            window.addEventListener('scroll', function() {
+                initScripts();
+            }, false);
+            
+            document.onclick = function() {
+                initScripts();
+            };
+        </script>
+        <!-- // -->
+
+        <!-- example of 3rd-party embedded: Google Adsense -->
+        <fscript async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></fscript>
+        <fscript>(adsbygoogle = window.adsbygoogle || []).push({ google_ad_client: "...", enable_page_level_ads: true });</fscript> 
+        <!-- // -->
+    </head>
+    <body>
+        <h1>Hello world.</h1>
+    </body>
+</html>
