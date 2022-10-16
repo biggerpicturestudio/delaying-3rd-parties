@@ -2,13 +2,13 @@
 The solution has been adopted from Gatsby (https://github.com/Kilian/gatsby-plugin-segment-js). 
 
 It works as follows:
-- wait for the user to scroll or update the site (for example via clicking the burger menu)
+- wait for the user to scroll or update the site (for example via clicking any element on the site)
 - do a setTimeout for 1 second
 - then load the third-party scripts
 
 Due to this time delay, if user visits the website, page appears and starts to be interactive immediately (it depends on first-party scripts though) and the third-party scripts load only if user starts scrolling or making interactions on the page.
 
-It's a perfect solution to load third-parties such as ads, chats, widgets (that are below-the-fold). In case of Google Analytics - feel free to try it, however be ready for inaccurate stats. If user visits your website and does not scroll or make any action, Google Analytics will never track that user because the script is not loaded in that case.
+It's a perfect solution to load third-parties such as ads, chats, widgets (that are below-the-fold). If user does not make any interaction on site, it will load all delayed 3rd-party scripts after 4s.
 
 ## How does it work technically?
 All the third-party scripts you want to delay, should use ```<fscript>``` tag instead of ```<script>```. So in case of script such as:

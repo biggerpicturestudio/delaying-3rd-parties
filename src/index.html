@@ -5,9 +5,10 @@
 
         <!-- inject this code in the <head> section -->
         <script>
-            var scriptsExecuted = false;
-            var head = document.getElementsByTagName('head')[0] || document.documentElement;
-            
+            let scriptsExecuted = false;
+            const head = document.getElementsByTagName('head')[0] || document.documentElement;
+            const autoLoad = setTimeout(initScripts, 3000);
+        
             function executeScripts() {
                 var fscripts = document.querySelectorAll('fscript');
                 [].forEach.call(fscripts, function(fscript) {
@@ -33,11 +34,13 @@
                     return;
                 }
             
+                clearTimeout(autoLoad);
+        
                 scriptsExecuted = true;
             
                 setTimeout(function() {
                     if ('requestIdleCallback' in window) {
-                        requestIdleCallback(executeScripts, { timeout: 1000 });
+                        requestIdleCallback(executeScripts, { timeout: 100 });
                     } else {
                         executeScripts();
                     }
